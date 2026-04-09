@@ -2,10 +2,44 @@ import json
 import os
 import sys
 import platform
+import shutil
 from pathlib import Path
 
 def get_python_exe():
     return sys.executable
+
+def install_codex_skills(home: Path) -> str:
+    codex_skills_dir = home / ".codex" / "skills" / "git-n-rust-skills"
+    
+    # Locate skills root
+    installed_data = Path(sys.prefix) / "git-n-rust-skills-data"
+    if installed_data.exists():
+        skills_root = installed_data
+    else:
+        skills_root = Path(__file__).parent.parent
+        
+    skill_files = []
+    for d in skills_root.iterdir():
+        if d.is_dir() and d.name[0].isdigit():
+            skill_files.extend(list(d.rglob("*.md")))
+            
+    if not skill_files:
+        return "[--] No skills found locally"
+        
+    try:
+        if codex_skills_dir.exists():
+            shutil.rmtree(codex_skills_dir)
+        codex_skills_dir.mkdir(parents=True, exist_ok=True)
+        
+        for sf in skill_files:
+            rel_path = sf.relative_to(skills_root)
+            dest = codex_skills_dir / rel_path
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(sf, dest)
+            
+        return f"[OK] Copied {len(skill_files)} skills"
+    except Exception as e:
+        return f"[FAIL] Error copying skills: {e}"
 
 def merge_mcp_config(config_path: Path, server_key: str, entry: dict):
     if config_path.exists():
@@ -138,6 +172,13 @@ def main():
         results.append(("Zed", "[OK] Registered", zed_config))
     else:
         results.append(("Zed", "[--] Not found", ""))
+
+    # Codex (direct file copy, no MCP required)
+    if (home / ".codex").exists():
+        status = install_codex_skills(home)
+        results.append(("Codex", status, home / ".codex" / "skills"))
+    else:
+        results.append(("Codex", "[--] Not found", ""))
 
     # Antigravity (Google Deepmind)
     antigravity_config = home / ".gemini" / "antigravity" / "mcp_config.json"
