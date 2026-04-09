@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "git-n-rust-skills"
+version = "0.1.0"
+description = "Stageira Skills MCP Server"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp",
+    "httpx-sse",
+    "pyyaml",
+    "pydantic"
+]
+
+[project.scripts]
+git-n-rust-skills-activate = "mcp_server.activator:main"
+git-n-rust-skills-server = "mcp_server.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["mcp_server"]
+
+[tool.hatch.build.targets.wheel.shared-data]
+"00-productivity-meta" = "git-n-rust-skills-data/00-productivity-meta"
+"01-core-systems" = "git-n-rust-skills-data/01-core-systems"
+"02-analytics-engineering" = "git-n-rust-skills-data/02-analytics-engineering"
+"03-cli-devx" = "git-n-rust-skills-data/03-cli-devx"
+"04-system-integration" = "git-n-rust-skills-data/04-system-integration"
+"05-performance" = "git-n-rust-skills-data/05-performance"
+"06-enterprise-security" = "git-n-rust-skills-data/06-enterprise-security"
+"07-testing-reliability" = "git-n-rust-skills-data/07-testing-reliability"
+"08-devops-release" = "git-n-rust-skills-data/08-devops-release"
+"09-product-monetization" = "git-n-rust-skills-data/09-product-monetization"
+"10-go-to-market" = "git-n-rust-skills-data/10-go-to-market"
+"11-project-management" = "git-n-rust-skills-data/11-project-management"

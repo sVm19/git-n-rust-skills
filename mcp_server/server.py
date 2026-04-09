@@ -1,19 +1,10 @@
 """
 server.py — Stageira Skills MCP Server
 
-Supports two modes:
-  --skills-root /path    Read SKILL.md files from local directory
-  --github-repo u/repo   Fetch SKILL.md files from GitHub (with local cache)
+Reads SKILL.md files from local directory.
 
 Usage:
-    # Local
     python server.py --skills-root C:/rust-git-skills
-
-    # GitHub
-    python server.py --github-repo alice/git-n-rust-skills
-
-    # GitHub with specific branch
-    python server.py --github-repo alice/git-n-rust-skills --branch develop
 """
 
 from __future__ import annotations
@@ -39,19 +30,7 @@ THIS_DIR = Path(__file__).parent
 DEFAULT_SKILLS_ROOT = THIS_DIR.parent
 
 
-# -- Registry factory — local or GitHub --------------------------------------
-# Support both plain-script execution (python server.py) and package execution
-# (python -m mcp_server.server). Relative imports only work in the latter, so
-# we fall back to absolute imports when running as __main__.
-
-def _import_github_registry():
-    try:
-        from .github_registry import GitHubSkillRegistry
-    except ImportError:
-        sys.path.insert(0, str(THIS_DIR))
-        from github_registry import GitHubSkillRegistry  # type: ignore
-    return GitHubSkillRegistry
-
+# ── Registry factory ──────────────────────────────────────────────────────────
 
 def _import_skill_registry():
     try:
@@ -63,25 +42,21 @@ def _import_skill_registry():
 
 
 def build_registry(args):
-    """Create the appropriate SkillRegistry based on CLI args."""
-    import os
-    if args.github_repo:
-        GitHubSkillRegistry = _import_github_registry()
-        parts = args.github_repo.split("/", 1)
-        if len(parts) != 2:
-            print(f"[stageira-skills] ERROR: --github-repo must be 'owner/repo', got: {args.github_repo}", file=sys.stderr)
-            sys.exit(1)
-        owner, repo = parts
-        branch = getattr(args, "branch", "main") or "main"
-        token = os.environ.get("GITHUB_TOKEN") or None
-        print(f"[stageira-skills] Mode: GitHub | {owner}/{repo}@{branch}" +
-              (" (authenticated)" if token else " (unauthenticated)"), file=sys.stderr)
-        return GitHubSkillRegistry(owner=owner, repo=repo, branch=branch, token=token)
+    """Create the SkillRegistry based on CLI args."""
+    SkillRegistry = _import_skill_registry()
+    
+    # Try sys.prefix first (pip installed)
+    installed_data = Path(sys.prefix) / "git-n-rust-skills-data"
+    
+    if args.skills_root:
+        root = Path(args.skills_root)
+    elif installed_data.exists():
+        root = installed_data
     else:
-        SkillRegistry = _import_skill_registry()
-        root = Path(args.skills_root) if args.skills_root else DEFAULT_SKILLS_ROOT
-        print(f"[stageira-skills] Mode: Local | {root}", file=sys.stderr)
-        return SkillRegistry(root)
+        root = DEFAULT_SKILLS_ROOT
+        
+    print(f"[stageira-skills] Mode: Local | {root}", file=sys.stderr)
+    return SkillRegistry(root)
 
 
 # ── MCP Server ────────────────────────────────────────────────────────────────
@@ -233,8 +208,6 @@ def create_server(registry) -> Server:
 async def main():
     parser = argparse.ArgumentParser(description="Stageira Skills MCP Server")
     parser.add_argument("--skills-root", default=None, help="Local skills directory")
-    parser.add_argument("--github-repo", default=None, help="GitHub repo: owner/repo-name")
-    parser.add_argument("--branch", default="main", help="GitHub branch (default: main)")
     args, _ = parser.parse_known_args()
 
     registry = build_registry(args)

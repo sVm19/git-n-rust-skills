@@ -20,45 +20,19 @@ Instead of re-explaining your architecture every session, each skill permanently
 
 ## Quick Start — Activate All Skills in One Command
 
-### Windows
-
-```powershell
-# Clone the repo (or use GitHub mode below — no clone needed)
-git clone https://github.com/sVm19/git-n-rust-skills
-cd git-n-rust-skills
-
-# Activate for all detected coding agents
-.\activate.git-n-rust-skills.ps1
-```
-
-### macOS / Linux
+You can install the skills and the MCP activator directly from GitHub using pip:
 
 ```bash
-git clone https://github.com/sVm19/git-n-rust-skills
-cd git-n-rust-skills
-bash activate.git-n-rust-skills.sh
+# 1. Install directly from GitHub
+pip install git+https://github.com/sVm19/git-n-rust-skills
+
+# 2. Activate into your coding agents (Claude, Cursor, Windsurf, etc.)
+git-n-rust-skills-activate
 ```
 
 **Then restart your editor.** Done.
 
----
-
-## GitHub Mode — No Clone Needed
-
-Activate on any machine without cloning the repo first:
-
-```powershell
-# Windows — fetches skills directly from GitHub
-.\activate.git-n-rust-skills.ps1 -GithubRepo "sVm19/git-n-rust-skills"
-```
-
-```bash
-# macOS / Linux
-bash activate.git-n-rust-skills.sh --github-repo sVm19/git-n-rust-skills
-```
-
-Skills are cached locally after the first fetch. When you push new skills to GitHub, your agent calls `reload_skills()` and gets them instantly — no restart needed.
-
+Your AI agent has instant access to your exact, living codebase architectures. When you push new skills to GitHub, just tell your agent `reload_skills()` and it pulls the latest instructions instantly.
 ---
 
 ## Supported Coding Agents
@@ -196,10 +170,11 @@ The agent reads the `description` field of every skill and matches it to your re
 
 ## Deactivate
 
-```powershell
-# Remove from all agents
-.\deactivate.git-n-rust-skills.ps1
+To remove the skills, uninstall the python package:
+```bash
+pip uninstall git-n-rust-skills
 ```
+And manually remove the `"stageira-skills"` entry from your agent's MCP JSON configuration file.
 
 ---
 
