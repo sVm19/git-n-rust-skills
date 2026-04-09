@@ -1,6 +1,6 @@
 ---
 name: cicd-pipelines
-description: Set up and configure GitHub Actions and GitLab CI pipelines for Stageira: multi-platform Rust builds, automated testing, coverage reports, and crates.io releases. Use when working on .github/workflows/, adding CI jobs, setting up cross-compilation, configuring release automation, or troubleshooting pipeline failures. Triggers on "github actions", "CI pipeline", "workflow", "release automation", "cross-compile", "cargo-release".
+description: "Set up and configure GitHub Actions and GitLab CI pipelines for Stageira: multi-platform Rust builds, automated testing, coverage reports, and crates.io releases. Use when working on .github/workflows/, adding CI jobs, setting up cross-compilation, configuring release automation, or troubleshooting pipeline failures. Triggers on \"github actions\", \"CI pipeline\", \"workflow\", \"release automation\", \"cross-compile\", \"cargo-release\"."
 compatibility: GitHub Actions, GitLab CI, cargo-release, cross-rs
 ---
 

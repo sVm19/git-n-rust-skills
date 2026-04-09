@@ -39,22 +39,46 @@ THIS_DIR = Path(__file__).parent
 DEFAULT_SKILLS_ROOT = THIS_DIR.parent
 
 
-# ── Registry factory — local or GitHub ───────────────────────────────────────
+# -- Registry factory — local or GitHub --------------------------------------
+# Support both plain-script execution (python server.py) and package execution
+# (python -m mcp_server.server). Relative imports only work in the latter, so
+# we fall back to absolute imports when running as __main__.
+
+def _import_github_registry():
+    try:
+        from .github_registry import GitHubSkillRegistry
+    except ImportError:
+        sys.path.insert(0, str(THIS_DIR))
+        from github_registry import GitHubSkillRegistry  # type: ignore
+    return GitHubSkillRegistry
+
+
+def _import_skill_registry():
+    try:
+        from .skill_registry import SkillRegistry
+    except ImportError:
+        sys.path.insert(0, str(THIS_DIR))
+        from skill_registry import SkillRegistry  # type: ignore
+    return SkillRegistry
+
 
 def build_registry(args):
     """Create the appropriate SkillRegistry based on CLI args."""
+    import os
     if args.github_repo:
-        from .github_registry import GitHubSkillRegistry
+        GitHubSkillRegistry = _import_github_registry()
         parts = args.github_repo.split("/", 1)
         if len(parts) != 2:
             print(f"[stageira-skills] ERROR: --github-repo must be 'owner/repo', got: {args.github_repo}", file=sys.stderr)
             sys.exit(1)
         owner, repo = parts
         branch = getattr(args, "branch", "main") or "main"
-        print(f"[stageira-skills] Mode: GitHub | {owner}/{repo}@{branch}", file=sys.stderr)
-        return GitHubSkillRegistry(owner=owner, repo=repo, branch=branch)
+        token = os.environ.get("GITHUB_TOKEN") or None
+        print(f"[stageira-skills] Mode: GitHub | {owner}/{repo}@{branch}" +
+              (" (authenticated)" if token else " (unauthenticated)"), file=sys.stderr)
+        return GitHubSkillRegistry(owner=owner, repo=repo, branch=branch, token=token)
     else:
-        from .skill_registry import SkillRegistry
+        SkillRegistry = _import_skill_registry()
         root = Path(args.skills_root) if args.skills_root else DEFAULT_SKILLS_ROOT
         print(f"[stageira-skills] Mode: Local | {root}", file=sys.stderr)
         return SkillRegistry(root)

@@ -26,7 +26,7 @@ def test_registry():
     registry = SkillRegistry(SKILLS_ROOT)
     skills = registry.skills
 
-    print(f"  📚 Total skills found: {len(skills)}")
+    print(f"  Total skills found: {len(skills)}")
     print()
 
     # Group by category
@@ -34,37 +34,48 @@ def test_registry():
     for cat, cat_skills in sorted(by_cat.items()):
         print(f"  {cat}:")
         for s in cat_skills:
-            print(f"    ✓ {s.name:<35} ({s.skill_folder})")
+            print(f"    [OK] {s.name:<35} ({s.skill_folder})")
     print()
 
     # Test search
-    print("  🔍 Testing search('code churn'):")
+    print("  Testing search('code churn'):")
     results = registry.search("code churn", max_results=3)
     for r in results:
-        print(f"    → {r.name}")
+        print(f"    -> {r.name}")
     print()
 
     # Test find_by_name
-    print("  🔍 Testing find_by_name('git-internals-master'):")
+    print("  Testing find_by_name('git-internals-master'):")
     skill = registry.find_by_name("git-internals-master")
     if skill:
-        print(f"    ✓ Found: {skill.name}")
-        content = skill.load_body()
-        print(f"    ✓ Content loaded: {len(content)} chars")
+        print(f"    [OK] Found: {skill.name}")
     else:
-        print("    ✗ Not found!")
+        print("    [FAIL] Not found!")
     print()
 
-    # Test read skill body
-    print("  🔍 Testing read_skill('software-metrics'):")
-    skill = registry.find_by_name("software-metrics")
-    if skill:
-        body = skill.load_body()
-        print(f"    ✓ Body: {len(body)} chars | First line: {body.splitlines()[0][:60]}")
-    print()
+    # Test read ALL skill bodies to ensure no parsing errors
+    print("  Testing payload loading for ALL skills:")
+    failed = 0
+    for s in skills:
+        try:
+            body = s.load_body()
+            if len(body) > 0:
+                print(f"    [OK] {s.name:<30} -> {len(body):>6} bytes")
+            else:
+                print(f"    [FAIL] {s.name:<30} -> EMPTY BODY!")
+                failed += 1
+        except Exception as e:
+            print(f"    [FAIL] {s.name:<30} -> ERROR: {e}")
+            failed += 1
+            
+    if failed > 0:
+        print(f"\n  [FAIL] {failed} skills failed to load properly.")
+        sys.exit(1)
+    else:
+        print(f"\n  [OK] All {len(skills)} skills loaded perfectly.")
 
     print(f"{'='*55}")
-    print("  ✅ Smoke test passed!")
+    print("  [OK] Smoke test passed!")
     print(f"{'='*55}\n")
 
 

@@ -1,6 +1,6 @@
 ---
 name: file-based-integration
-description: Implement Stageira's file-based integration strategy: exporting metrics to Datadog, Prometheus, and Slack without using any external APIs. Use when adding export targets, implementing the --export-to-datadog or --export-to-prometheus flags, writing webhook triggers, or explaining how Stageira integrates with third-party tools without network access beyond one-direction pushes. Triggers on "datadog export", "prometheus metrics", "slack webhook", "file-based integration", "export pipeline", or "push metrics".
+description: "Implement Stageira's file-based integration strategy: exporting metrics to Datadog, Prometheus, and Slack without using any external APIs. Use when adding export targets, implementing the --export-to-datadog or --export-to-prometheus flags, writing webhook triggers, or explaining how Stageira integrates with third-party tools without network access beyond one-direction pushes. Triggers on \"datadog export\", \"prometheus metrics\", \"slack webhook\", \"file-based integration\", \"export pipeline\", or \"push metrics\"."
 ---
 
 # File-Based Integration

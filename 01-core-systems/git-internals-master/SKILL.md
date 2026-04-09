@@ -1,6 +1,6 @@
 ---
 name: git-internals-master
-description: Master skill for reading .git/ directory structure, walking commit graphs, extracting blobs/trees/diffs using libgit2 / git2-rs. Use whenever working on Stageira's core engine: parsing commits, extracting author data, walking history, reading file diffs from the .git/objects/ folder. Triggers on "read commits", "parse .git", "walk history", "extract diffs", "libgit2", "git2-rs", or any work in the scanner.py / objects.rs / src/ core.
+description: "Master skill for reading .git/ directory structure, walking commit graphs, extracting blobs/trees/diffs using libgit2 / git2-rs. Use whenever working on Stageira's core engine: parsing commits, extracting author data, walking history, reading file diffs from the .git/objects/ folder. Triggers on \"read commits\", \"parse .git\", \"walk history\", \"extract diffs\", \"libgit2\", \"git2-rs\", or any work in the scanner.py / objects.rs / src/ core."
 compatibility: Rust 1.75+, Python 3.10+ with gitpython
 ---
 

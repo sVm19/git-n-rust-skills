@@ -23,3 +23,8 @@ Thumbs.db
 # Editor
 .vscode/settings.json
 *.swp
+
+# Ignore project planning docs
+project-plan.md
+required-skills.md
+SKILL-CEREATOR.md

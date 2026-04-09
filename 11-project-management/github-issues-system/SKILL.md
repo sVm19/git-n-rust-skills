@@ -1,6 +1,6 @@
 ---
 name: github-issues-system
-description: Design and maintain Stageira's GitHub Issues workflow: labels, milestones, issue templates, project boards, and triage rhythm. Use when setting up project management, creating issue templates, writing label configs, planning milestones, or establishing a triage process. Triggers on "github issues", "labels", "milestones", "issue template", "project board", "triage", "backlog", or "release planning".
+description: "Design and maintain Stageira's GitHub Issues workflow: labels, milestones, issue templates, project boards, and triage rhythm. Use when setting up project management, creating issue templates, writing label configs, planning milestones, or establishing a triage process. Triggers on \"github issues\", \"labels\", \"milestones\", \"issue template\", \"project board\", \"triage\", \"backlog\", or \"release planning\"."
 ---
 
 # GitHub Issues System — Stageira Project Management

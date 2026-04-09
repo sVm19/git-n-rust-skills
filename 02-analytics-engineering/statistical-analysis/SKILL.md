@@ -1,6 +1,6 @@
 ---
 name: statistical-analysis
-description: Apply statistical methods to Stageira's git metrics: trend detection, time-series comparison (Q1 vs Q2), variance/anomaly detection. Use whenever the user wants to compare time periods, detect unusual spikes in commits, plot trends, or implement the "historical comparison" feature. Triggers on "compare quarters", "trend detection", "anomaly", "statistical", "time series", "variance", or "Q1 vs Q2".
+description: "Apply statistical methods to Stageira's git metrics: trend detection, time-series comparison (Q1 vs Q2), variance/anomaly detection. Use whenever the user wants to compare time periods, detect unusual spikes in commits, plot trends, or implement the \"historical comparison\" feature. Triggers on \"compare quarters\", \"trend detection\", \"anomaly\", \"statistical\", \"time series\", \"variance\", or \"Q1 vs Q2\"."
 compatibility: Python 3.10+, polars, numpy, scipy (optional)
 ---
 

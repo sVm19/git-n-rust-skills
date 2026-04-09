@@ -1,6 +1,6 @@
 ---
 name: distribution
-description: Handle Stageira's package distribution: publishing to crates.io, creating Homebrew tap formulas, and managing GitHub Releases. Use when preparing a release, writing a homebrew formula, setting up crates.io publishing, bump versions with cargo-release, or cross-compiling for multiple platforms. Triggers on "publish", "crates.io", "homebrew", "distribution", "release", "cross-compile", "package".
+description: "Handle Stageira's package distribution: publishing to crates.io, creating Homebrew tap formulas, and managing GitHub Releases. Use when preparing a release, writing a homebrew formula, setting up crates.io publishing, bump versions with cargo-release, or cross-compiling for multiple platforms. Triggers on \"publish\", \"crates.io\", \"homebrew\", \"distribution\", \"release\", \"cross-compile\", \"package\"."
 compatibility: cargo-release, cross-rs, Homebrew (macOS)
 ---
 

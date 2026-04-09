@@ -1,6 +1,6 @@
 ---
 name: software-metrics
-description: Implement and compute software engineering metrics for Stageira: code churn, bus factor, contribution distribution, temporal coupling, commit frequency trends. Use whenever working on metrics algorithms, adding a new metric, or explaining what a metric means to enterprise customers. Triggers on "code churn", "bus factor", "temporal coupling", "contribution stats", "commit trends", or "metrics" in the context of git analysis.
+description: "Implement and compute software engineering metrics for Stageira: code churn, bus factor, contribution distribution, temporal coupling, commit frequency trends. Use whenever working on metrics algorithms, adding a new metric, or explaining what a metric means to enterprise customers. Triggers on \"code churn\", \"bus factor\", \"temporal coupling\", \"contribution stats\", \"commit trends\", or \"metrics\" in the context of git analysis."
 ---
 
 # Software Metrics Engineering
