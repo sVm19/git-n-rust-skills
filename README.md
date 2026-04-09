@@ -30,6 +30,15 @@ pip install git+https://github.com/sVm19/git-n-rust-skills
 git-n-rust-skills-activate
 ```
 
+> **Note for Windows Users (`command not found` error):**
+> If `pip` warns you that the script is not on your `PATH`, your terminal won't recognize the `git-n-rust-skills-activate` command.
+> 
+> **Quick Fix:** You can run the activator directly through Python:
+> ```bash
+> python -m mcp_server.activator
+> ```
+> **Permanent Fix:** Add your pip Scripts folder (usually `C:\Users\{YourName}\AppData\Roaming\Python\Python31X\Scripts`) to your system's `PATH` Environment Variable.
+
 **Then restart your editor.** Done.
 
 Your AI agent has instant access to your exact, living codebase architectures. When you push new skills to GitHub, just tell your agent `reload_skills()` and it pulls the latest instructions instantly.
