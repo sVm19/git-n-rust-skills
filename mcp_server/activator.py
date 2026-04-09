@@ -139,6 +139,14 @@ def main():
     else:
         results.append(("Zed", "[--] Not found", ""))
 
+    # Antigravity (Google Deepmind)
+    antigravity_config = home / ".gemini" / "antigravity" / "mcp_config.json"
+    if antigravity_config.parent.exists():
+        merge_mcp_config(antigravity_config, "stageira-skills", server_entry)
+        results.append(("Antigravity (Gemini)", "[OK] Registered", antigravity_config))
+    else:
+        results.append(("Antigravity (Gemini)", "[--] Not found", ""))
+
     # Continue.dev
     continue_config = home / ".continue" / "config.json"
     if continue_config.parent.exists():
