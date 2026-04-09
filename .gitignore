@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# MCP skill cache (auto-generated from GitHub)
+.cache/
+
+# Secrets — never commit these
+.env
+*.token
+github_token.txt
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json
+*.swp

@@ -1,0 +1,76 @@
+{
+  "tiers": {
+    "free": {
+      "name": "Free (OSS Projects)",
+      "price": "$0/month",
+      "price_annual": "$0/year",
+      "target": "Open source maintainers, individual developers",
+      "features": [
+        "Basic metrics (churn, bus factor)",
+        "Single repository",
+        "CLI only",
+        "JSON export",
+        "Community support"
+      ],
+      "limits": {
+        "repos": 1,
+        "commits_per_scan": 10000,
+        "history_days": 90
+      }
+    },
+    "pro": {
+      "name": "Pro",
+      "price": "$49/month per developer",
+      "price_annual": "$490/year per developer (2 months free)",
+      "target": "Series A-C startups, engineering teams 10-100",
+      "features": [
+        "Unlimited repositories",
+        "Web dashboard (coming v0.2)",
+        "Temporal coupling analysis",
+        "Historical comparison (Q1 vs Q2)",
+        "Export integrations (Datadog, Prometheus)",
+        "Configurable alerts",
+        "Anonymized reports",
+        "Email support"
+      ],
+      "limits": {
+        "repos": "unlimited",
+        "commits_per_scan": "unlimited",
+        "history_days": "unlimited"
+      }
+    },
+    "enterprise": {
+      "name": "Enterprise",
+      "price": "Custom pricing",
+      "price_annual": "$5,000–$50,000/year",
+      "target": "Financial services, healthcare, defense, 50-500 developers",
+      "features": [
+        "Everything in Pro",
+        "SSO/SAML integration",
+        "On-premise deployment",
+        "Custom metrics",
+        "Priority support (SLA)",
+        "Compliance documentation",
+        "Air-gapped deployment support",
+        "Dedicated success manager"
+      ],
+      "limits": {
+        "repos": "unlimited",
+        "commits_per_scan": "unlimited",
+        "history_days": "unlimited",
+        "seats": "custom"
+      }
+    }
+  },
+  "feature_flags": {
+    "temporal_coupling": "pro",
+    "historical_comparison": "pro",
+    "web_dashboard": "pro",
+    "datadog_export": "pro",
+    "prometheus_export": "pro",
+    "slack_alerts": "pro",
+    "sso_saml": "enterprise",
+    "on_premise": "enterprise",
+    "custom_metrics": "enterprise"
+  }
+}

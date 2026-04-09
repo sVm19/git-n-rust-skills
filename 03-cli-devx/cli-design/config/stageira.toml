@@ -1,0 +1,38 @@
+# stageira.toml — Default configuration template for Stageira git analyzer
+# Copy this file to your repo root and customize.
+
+[repo]
+# Path to the git repository to analyze (default: current directory)
+path = "."
+# Analysis window in days (default: 30)
+window_days = 30
+
+[output]
+# Output format: "json" | "csv" | "table"
+format = "json"
+# Output file path (leave empty to write to stdout)
+# out = "stageira-report.json"
+
+[metrics]
+# Which metrics to compute (all enabled by default)
+churn = true
+bus_factor = true
+temporal_coupling = true
+contributor_stats = true
+commit_frequency = true
+
+[thresholds]
+# Top N files to report in churn (0 = all)
+churn_top_n = 50
+# Minimum co-changes to report temporal coupling pair
+temporal_coupling_min_support = 3
+
+[alerts]
+# Code churn threshold (0.0–1.0 ratio). Trigger alert if exceeded.
+code_churn_threshold = 0.7
+# Bus factor alert threshold. Alert if any file has bus factor < this value.
+bus_factor_min = 3
+# Notification method: "none" | "slack" | "webhook"
+notify = "none"
+# Slack webhook URL (only used if notify = "slack")
+# webhook_url = "https://hooks.slack.com/services/..."
