@@ -18,34 +18,24 @@ Instead of re-explaining your architecture every session, each skill permanently
 
 ---
 
-## Quick Start — Activate All Skills in One Command
+## Quick Start — Project-Level Skills (Claude Code, Codex, Cursor)
 
-### Option A: MCP Server (Claude Desktop, Cursor, Windsurf, etc.)
-
-Registers a background MCP server that gives every connected agent 4 new tools (`list_skills`, `search_skills`, `read_skill`, `reload_skills`).
+The easiest way to activate the skills is to add them directly to your project. This generates instruction files that agents will auto-discover — no background MCP server needed. The script will automatically pull the absolute latest skill definitions directly from GitHub, so there are never any outdated NPM caches!
 
 ```bash
-npx -y github:sVm19/git-n-rust-skills
-```
-
-**Then restart your editor.** Done.
-
-### Option B: Project-Level Files (Claude Code, Codex)
-
-If you use **Claude Code** or **OpenAI Codex CLI**, you can generate project-level instruction files that agents auto-discover — no MCP server needed:
-
-```bash
-npx -y github:sVm19/git-n-rust-skills -- --init .
+npx git-n-rust-skills
 ```
 
 This creates:
 
 | Agent | Files Generated | How the Agent Uses Them |
 |-------|----------------|------------------------|
-| **Claude Code** | `CLAUDE.md` + `.claude/rules/<skill>.md` | Auto-reads rules on session start; matches request → skill |
-| **Codex** | `AGENTS.md` + `.codex/<skill>.md` | Reads hierarchically; loads full instructions per skill |
+| **Claude Code** | `CLAUDE.md` | Auto-reads on session start; matches request to the skills in `.rustskills/` |
+| **Codex & Others** | `AGENTS.md` | Reads hierarchically; loads full instructions per skill from `.rustskills/` |
 
-Commit these files to your repo so every teammate's agent gets the skills automatically.
+Both configuration files point to a single unified **`.rustskills/`** folder containing all your agent markdown instructions.
+
+Commit these files (`CLAUDE.md`, `AGENTS.md`, and `.rustskills/`) to your repo so every teammate's agent gets the skills automatically out of the box!
 
 ---
 
@@ -83,7 +73,7 @@ reload_skills()                    → pull latest skills from GitHub
 > Agent: calls `search_skills("bus factor")` → finds `software-metrics`
 > → calls `read_skill("software-metrics")` → follows the implementation guide
 
-For **Claude Code** and **Codex**, the agent reads the skill index on session start and loads the matching rule file directly — no tool calls needed.
+For **Claude Code** and **Codex**, the agent reads the skill index on session start and loads the matching rule file directly from the `.rustskills/` directory — no tool calls needed.
 
 ---
 
@@ -187,13 +177,11 @@ The agent reads the `description` field of every skill and matches it to your re
 
 ## Deactivate
 
-To remove the skills, uninstall the python package:
+To remove all the skills from your project, simply delete the generated index files and the skills folder:
 ```bash
-pip uninstall git-n-rust-skills
+rm -rf .rustskills/ CLAUDE.md AGENTS.md
 ```
-And manually remove the `"stageira-skills"` entry from your agent's MCP JSON configuration file.
-
-For project-level files, simply delete the generated `CLAUDE.md`, `AGENTS.md`, `.claude/`, and `.codex/` directories.
+That's it! Your agent will no longer read the local Stageira knowledge base.
 
 ---
 

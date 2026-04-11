@@ -5,6 +5,9 @@
   "bin": {
     "git-n-rust-skills": "bin/activate.js"
   },
+  "files": [
+    "bin"
+  ],
   "scripts": {
     "start": "node bin/activate.js"
   },
