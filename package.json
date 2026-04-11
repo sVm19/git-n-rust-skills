@@ -1,0 +1,17 @@
+{
+  "name": "git-n-rust-skills",
+  "version": "1.0.0",
+  "description": "A skills library for building Rust based app.",
+  "bin": {
+    "git-n-rust-skills": "bin/activate.js"
+  },
+  "scripts": {
+    "start": "node bin/activate.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sVm19/git-n-rust-skills.git"
+  },
+  "author": "sVm19",
+  "license": "ISC"
+}

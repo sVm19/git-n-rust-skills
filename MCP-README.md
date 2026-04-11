@@ -4,45 +4,50 @@
 
 ## Quick Installation
 
-Installing the package automatically pulls down all local skills and gives you access to the cross-platform unified activator.
+### MCP Server (Claude Desktop, Cursor, Windsurf, VS Code, Zed, Continue.dev)
+
+Registers skills as an MCP server — every connected agent gets `list_skills`, `search_skills`, `read_skill`, and `reload_skills` tools.
 
 ```bash
-# 1. Install directly from GitHub
-pip install git+https://github.com/sVm19/git-n-rust-skills
-
-# 2. Activate into all detected coding agents
-git-n-rust-skills-activate
+npx -y github:sVm19/git-n-rust-skills
 ```
 
-> **Note for Windows Users (`command not found` error):**
-> If `pip` warns you that the script is not on your `PATH`, your terminal won't recognize the `git-n-rust-skills-activate` command.
-> 
-> **Quick Fix:** You can run the activator directly through Python:
-> ```bash
-> python -m mcp_server.activator
-> ```
-> **Permanent Fix:** Add your pip Scripts folder (usually `C:\Users\{YourName}\AppData\Roaming\Python\Python31X\Scripts`) to your system's `PATH` Environment Variable.
+### Project-Level Files (Claude Code, Codex)
+
+Generate `CLAUDE.md` + `.claude/rules/` and `AGENTS.md` + `.codex/` in any project directory. Agents auto-discover the skills on session start — no server required.
+
+```bash
+npx -y github:sVm19/git-n-rust-skills -- --init .
+```
+
+| Agent | What Gets Created | Agent Behavior |
+|-------|-------------------|----------------|
+| **Claude Code** | `CLAUDE.md` + `.claude/rules/<skill>.md` | Reads rules on session start, scopes by directory |
+| **Codex** | `AGENTS.md` + `.codex/<skill>.md` | Merges instructions hierarchically from root down |
+
+Commit the generated files so every teammate's agent picks them up automatically.
 
 ---
 
 ## Agents Supported
 
-The `git-n-rust-skills-activate` script auto-detects which agents are installed and configures **all of them**:
-
-| Agent | Config Location |
-|-------|----------------|
-| **Claude Desktop** | `%APPDATA%\Claude\claude_desktop_config.json` |
-| **Cursor** | `~\.cursor\mcp.json` |
-| **Windsurf** | `~\.codeium\windsurf\mcp_server_config.json` |
-| **VS Code + Cline** | VS Code globalStorage / `cline_mcp_settings.json` |
-| **Zed** | `%APPDATA%\Zed\settings.json` (context_servers) |
-| **Continue.dev** | `~\.continue\config.json` |
+| Agent | Method | Config Location |
+|-------|--------|----------------|
+| **Claude Desktop** | MCP Server | `%APPDATA%\Claude\claude_desktop_config.json` |
+| **Claude Code** | Project files | `CLAUDE.md` + `.claude/rules/` |
+| **Cursor** | MCP Server | `~\.cursor\mcp.json` |
+| **Windsurf** | MCP Server | `~\.codeium\windsurf\mcp_server_config.json` |
+| **VS Code + Cline** | MCP Server | VS Code globalStorage / `cline_mcp_settings.json` |
+| **Zed** | MCP Server | `%APPDATA%\Zed\settings.json` (context_servers) |
+| **Continue.dev** | MCP Server | `~\.continue\config.json` |
+| **OpenAI Codex CLI** | Project files | `AGENTS.md` + `.codex/` |
+| **Antigravity (Gemini)** | MCP Server | `~\.gemini\antigravity\mcp_config.json` |
 
 ---
 
 ## What Every Agent Gets
 
-Once activated, every coding agent has **4 new tools**:
+Once activated via MCP, every coding agent has **4 new tools**:
 
 ```
 list_skills()             → See all skills grouped by category
@@ -50,6 +55,8 @@ search_skills("churn")    → Find skills by keyword (ranked)
 read_skill("git-internals-master")  → Load full SKILL.md instructions
 reload_skills()           → Reload skills inside the agent
 ```
+
+For **Claude Code** and **Codex**, the agent reads the skill index file on session start and loads the matching rule file automatically — no tool invocations needed.
 
 ---
 
@@ -62,21 +69,24 @@ python skill-creator/generate_skill.py 01-core-systems my-new-skill
 # Edit SKILL.md, commit, push
 git add . && git commit -m "add: my-new-skill" && git push
 
-# Tell any agent to reload
+# Tell any MCP agent to reload
 # Agent calls: reload_skills()
+
+# For project-level users, re-run init to regenerate files
+npx -y github:sVm19/git-n-rust-skills -- --init .
 ```
 
 ---
 
 ## Deactivate
 
-To remove the skills, simply uninstall the package and manually edit out the configuration from your agent's config file:
+To remove the MCP server, uninstall the package and edit out the config entry:
 
 ```bash
 pip uninstall git-n-rust-skills
 ```
 
-Removes `stageira-skills` from your machine.
+To remove project-level files, delete `CLAUDE.md`, `AGENTS.md`, `.claude/`, and `.codex/`.
 
 ---
 
@@ -93,12 +103,16 @@ Verifies all SKILL.md files parse and the registry works.
 ## File Map
 
 ```
-pyproject.toml          ← Package definition and data mappings
+package.json            ← npx entry point
+pyproject.toml          ← Python package definition and data mappings
 README.md               ← Main documentation
 MCP-README.md           ← This file
 
+bin/
+└── activate.js         ← npx wrapper (installs pip package + runs activator)
+
 mcp_server/
-├── activator.py        ← Python script to inject into Claude/Cursor/Windsurf configs
+├── activator.py        ← Registers MCP server + generates project-level files
 ├── server.py           ← MCP server (stdio, works with any MCP client)
 ├── skill_registry.py   ← Local filesystem scanner
 └── test_server.py      ← Smoke test (no agent needed)
@@ -112,6 +126,7 @@ mcp_server/
 
 | Problem | Fix |
 |---------|-----|
-| `git-n-rust-skills-activate: command not found` | Your pip install path isn't in your `PATH`. Alternatively, run `python -m mcp_server.activator`. |
-| `ModuleNotFoundError: mcp` | The installation failed. Try running `pip install git+https://github.com/sVm19/git-n-rust-skills` again. |
+| `Missing python` | You must have Python installed and on your PATH. |
+| `ModuleNotFoundError: mcp` | The installation failed. Try running `python -m pip install git+https://github.com/sVm19/git-n-rust-skills` manually. |
 | Skills not updating | Agent calls `reload_skills()` or restart the agent |
+| `.claude/` or `.codex/` files missing skills | Re-run `npx -y github:sVm19/git-n-rust-skills -- --init .` |
